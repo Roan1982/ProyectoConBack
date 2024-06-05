@@ -1,0 +1,53 @@
+
+footer {
+   position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #076d6d;
+    color: white;
+    text-align: center;
+    padding: 8px 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.479), 0 -4px 12px rgba(0, 0, 0, 0.479);
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-text {
+    margin-left: 20px;
+    text-align: left;
+}
+
+.footer-text p,
+.footer-text h5 {
+    margin: 5px 0;
+}
+
+.imgfooter {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100px;
+    align-self: center;
+}
+
+/* Media query para pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+    footer {
+        position: relative; /* Cambia la posición a relativa para que el footer fluya con el contenido */
+        box-shadow: none; /* Elimina la sombra en dispositivos más pequeños */
+    }
+
+    .footer-content {
+        flex-direction: column; /* Cambia la dirección de la columna en dispositivos más pequeños */
+        text-align: center; /* Centra el contenido del footer en dispositivos más pequeños */
+    }
+
+    .footer-text {
+        margin-left: 0; /* Elimina el margen izquierdo en dispositivos más pequeños */
+        text-align: center; /* Centra el texto en dispositivos más pequeños */
+    }
+}

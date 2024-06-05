@@ -1,0 +1,451 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../img/7ec39fb7e2774b017bc1a78ea45661da.jpg");
+    background-size: cover;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    padding-top: 0px;
+}
+
+header {
+    background-image: url("../img/header.png");
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: left;
+    font-variant: small-caps;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-stretch: expanded;
+    padding: 2% 10%; /* Ajusta el padding según sea necesario */
+    height: 150px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0; /* Asegura que no haya margen alrededor del texto */
+    font-size: 2em; /* Tamaño de fuente inicial */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.animate__animated {
+    animation: animate__heartBeat .4s; /* Agrega la unidad de tiempo para la animación */
+    text-shadow: 0 8px 10px #07e4c6;
+    text-decoration-style: #3008e2; /* Esto no parece ser una propiedad válida de CSS */
+    font-size: xx-large;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 3% 5%; /* Ajusta el padding para controlar la altura del encabezado en pantallas pequeñas */
+    }
+
+    header h1 {
+        font-size: 1.5em; /* Reducir el tamaño de la fuente para pantallas más pequeñas */
+        white-space: normal; /* Permitir que el texto se divida en varias líneas */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        height: 150px;
+        padding: 3% 5%;
+    }
+}
+
+
+
+/* Navigation */
+nav {
+    background-color: #076d6d;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.479), 0 4px 12px rgba(0, 0, 0, 0.479);
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    /* Cambiado a relative para ajustarse al header */
+    z-index: 900;
+    height: 45px;
+
+}
+
+nav a {
+    color: rgba(255, 255, 255, 0.568);
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background-color: #e2242400;
+    /* Cambiado para resaltar el hover */
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.479), 0 4px 12px rgba(0, 0, 0, 0.479);
+    transform: scale(1.3);
+}
+
+nav a i {
+
+    margin-right: 5px;
+    align-items: center;
+    margin-top: 7px;
+    font-size: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    nav {
+        height: auto;
+        /* Cambiado a auto para ajustarse al contenido */
+        padding: 5px;
+        /* Ajuste del padding para dispositivos móviles */
+    }
+
+    nav a {
+        display: block;
+        /* Cambiado a block para que cada enlace ocupe toda la anchura */
+        padding: 10px;
+        /* Ajuste del padding para dispositivos móviles */
+        margin-bottom: 5px;
+        /* Espacio entre enlaces en dispositivos móviles */
+    }
+}
+
+.imagen-pasillo2 {
+    position: relative;
+    margin-left: 450px;
+    margin-right: 450px;
+    border-radius: 200px;
+    border-top: 4px solid rgb(0, 0, 0);
+    border-bottom: 4px solid rgb(0, 0, 0);
+    box-shadow:
+        0 0 15px 0 rgba(72, 72, 73, 0.575),
+        0 0 25px 0 rgba(102, 102, 103, 0.575),
+        0 0 35px 0 rgba(132, 132, 133, 0.575),
+        0 0 45px 0 rgba(162, 162, 163, 0.575),
+        0 0 55px 0 rgba(192, 192, 193, 0.575);
+    margin-top: 20px;
+    
+    filter: invert(100%);
+    
+    /* Aplicar la animación */
+    animation-name: rodarComoRueda;
+    animation-duration: 20s;
+    animation-delay: 0s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+
+
+}
+
+@keyframes rodarComoRueda {
+
+    0%,
+    100% {
+        transform: translateY(-160%);
+    }
+
+    40% {
+        transform: translateY(40%);
+    }
+
+    60% {
+        transform: translateY(40%);
+    }
+}
+
+.imagen-pasillo3 {
+    position: relative;
+    margin-left: 450px;
+    margin-right: 450px;
+    border-radius: 200px;
+    border-top: 4px solid rgb(255, 255, 255);
+    border-bottom: 4px solid rgb(255, 255, 255);
+    box-shadow:
+        0 0 15px 0 rgba(72, 72, 73, 0.575),
+        0 0 25px 0 rgba(102, 102, 103, 0.575),
+        0 0 35px 0 rgba(132, 132, 133, 0.575),
+        0 0 45px 0 rgba(162, 162, 163, 0.575),
+        0 0 55px 0 rgba(192, 192, 193, 0.575);
+    z-index: 0;
+    margin-top: 20px;
+    margin-bottom: 0%;
+    visibility: hidden;
+   
+    /* Aplicar la animación */
+    animation-name: rodarComoRueda2;
+    animation-duration: 10s;
+    animation-delay: 15s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+
+}
+
+@keyframes rodarComoRueda2 {
+    0% {
+        transform: translateY(-300%);
+        visibility: visible;
+    }
+
+    100% {
+        transform: translateY(-60%);
+        visibility: visible;
+    
+    }
+}
+
+
+.carousel-1-img {
+    max-width: 250px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    transition: transform 0.3s ease;
+    align-self: justify center;
+    border: #ffffff solid 3px;
+    border-radius: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.carousel-1-img:hover {
+    transform: scale(1.5);
+    image-rendering: optimizeQuality;
+    border: 3px solid rgb(255, 255, 255);
+}
+
+
+.carrousel-1-img {
+    justify-content: space-between;
+    max-width: 350px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    margin: auto;
+}
+
+.carousel-1 .carousel-inner {
+    width: 100%;
+    margin: auto;
+    background-color: #2e2d2a42;
+    overflow: hidden;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+
+
+.carousel-1 .row {
+    justify-content: center;
+}
+
+
+
+section {
+    padding: 20px;
+}
+
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.registro {
+    text-align: center;
+}
+
+.imagen-logo {
+    display: block;
+    margin: 0 auto;
+    height: 20rem;
+    transition: ease-in;
+}
+
+#registro {
+    margin-bottom: 100px;
+}
+
+
+
+button {
+    width: calc(50% - 22%);
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.banner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imagenContainer {
+    text-align: center;
+    display: inline-block;
+    width: 220px;
+    height: 220px;
+    margin-left: -4em;
+}
+
+.imagenCircular {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    border: 5px solid #272727;
+    transition: transform 0.3s ease;
+    text-align: center;
+
+}
+
+.imagenCircular {
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+}
+
+.imagenCircular img {
+    width: 100%;
+    height: auto;
+}
+
+.imagenCircular:hover {
+    box-shadow:
+        0 0 15px 0 rgba(72, 72, 73, 0.575),
+        0 0 25px 0 rgba(102, 102, 103, 0.575),
+        0 0 35px 0 rgba(132, 132, 133, 0.575),
+        0 0 45px 0 rgba(162, 162, 163, 0.575),
+        0 0 55px 0 rgba(192, 192, 193, 0.575);
+}
+
+#hoveredImage {
+    display: none;
+}
+
+.carousel-2 img {
+    max-width: 250px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    transition: transform 0.3s ease;
+    align-self: center;
+    border: #fffefe solid 4px;
+    border-radius: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.carousel-2 .carrousel-img {
+    justify-content: space-between;
+    max-width: 200px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin: auto;
+}
+
+.carousel-2 img:hover {
+    transform: scaleX(-1);
+    border: 4px solid #f8e8bd;
+    filter: drop-shadow(4px 4px 4px 4px rgba(46, 44, 44, 0.822));
+}
+
+.carousel-2 .carousel-inner {
+    width: 100%;
+    margin: auto;
+    background-color: #2e2d2a42;
+    overflow: hidden;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+
+.carousel-2 .row {
+    justify-content: center;
+}
+
+
+
+#opinion-container {
+    margin-top: 25px;
+}
+
+#opinion {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #6b5357;
+    border-radius: 5px;
+}
+
+button#submit-opinion {
+    margin-top: 25px;
+    background-color: #000000;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#submit-opinion:hover {
+    background-color: #555;
+}
+
+#thank-you-message {
+    display: none;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+@media screen and (max-width: 768px) {
+    .imagen-pasillo2, .imagen-pasillo3 {
+        margin-left: 10%; /* Cambiar a un valor relativo */
+        margin-right: 10%; /* Cambiar a un valor relativo */
+        width: 80%; /* Cambiar a un valor relativo */
+    }
+
+    .carousel-container {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .carousel-1-img {
+        max-width: 40%; /* Cambiar a un valor relativo */
+        margin-left: 2%; /* Ajustar los márgenes */
+        margin-right: 2%; /* Ajustar los márgenes */
+    }
+
+    .carousel-2 .carrousel-img {
+        max-width: 40%; /* Cambiar a un valor relativo */
+        margin-left: 2%; /* Ajustar los márgenes */
+        margin-right: 2%; /* Ajustar los márgenes */
+    }
+
+    .carousel-3 .carrousel-img {
+        max-width: 40%; /* Cambiar a un valor relativo */
+        margin-left: 2%; /* Ajustar los márgenes */
+        margin-right: 2%; /* Ajustar los márgenes */
+    }
+
+    .imagenCircular {
+        height: 80%;
+        width: 80%; /* Cambiar a un valor relativo */
+    }
+
+    #registro .imagen-logo {
+        width: 90%; /* Cambiar a un valor relativo */
+        height: auto; /* Ajustar la altura automáticamente */
+    }
+}

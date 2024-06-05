@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenidos</title>
+  <link rel="icon" type="img/png" href="{{ url_for('static', filename='img/ccicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bienvenido.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://kit.fontawesome.com/8b94bb0a5e.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="header-nav-container">
+    <header class="header">
+      <h1 class="animate__animated animate__fadeInTopLeft">Bienvenid@ <span id="usernameHeader">{{ session['username'] }}</span></h1>
+
+    </header>
+
+    <nav class="nav">
+      <div class="navbar-inner">
+        <div class="nav-left">
+          <a href="{{ url_for('home') }}" title="Home">
+            <i class="fa-solid fa-house" style="padding-right: 20px;"></i>
+          </a>
+          <a href="{{ url_for('tucuento') }}" title="tucuento">
+            <i class="fa-solid fa-pen-nib" style="color: #fafafab6;"></i>
+          </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="nav-right">
+          <div class="dropdown">
+            <button class="dropbtn">Secciones</button>
+            <div class="dropdown-content">
+              <a href="#aventuras"><span class="star">★</span>Aventuras y Acción</a>
+              <a href="#Cuentos"><span class="star">★</span>Cuentos infantiles</a>
+              <a href="#Didactica"><span class="star">★</span>Didáctica</a>
+              <a href="#Fabulas"><span class="star">★</span>Fábulas y Leyendas</a>
+              <a href="#Misterio"><span class="star">★</span>Misterio</a>
+              <a href="#NocheDeTormentas"><span class="star">★</span>Noches de Tormenta</a>
+              <a href="#Audiolibros"><span class="star">★</span>Audiolibros</a>
+            </div>
+          </div>
+          <a href="{{ url_for('logout') }}" onclick="logout()" title="Salir">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </a>
+            
+       
+        </div>
+      </div>
+    </nav>
+
+    <button class="sticky-btn" onclick="scrollToTop()">Subir <i class="fa-solid fa-turn-up" style="color: #f0f2f4;"></i></button>
+  
+    <section id="banner">
+      <div class="container">
+        <div class="text-center">
+          <h2>¡Bienvenido a nuestra Biblioteca Mágica!</h2>
+          <p>Explora un universo de emociones, descubrimientos y fantasía entre las páginas de nuestros libros. Sumérgete en mundos extraordinarios y aventuras inolvidables a través de nuestras diversas secciones, cada una diseñada para encantar, educar y cautivar a lectores de todas las edades. ¡Prepárate para dejarte llevar por la magia de la lectura y descubrir todo lo que nuestra biblioteca tiene para ofrecerte!</p><br>
+          <img src="{{ url_for('static', filename='img/vecteezy_vector-poster-of-magic-books-in-library_14343440.jpg') }}" alt="imagen pasillo" width="60%" height="100%" class="imagen-pasillo" id="imagen-pasillo" style="white-space-collapse: 0px">
+          <br><br>
+          <h2>¿Qué aventura vas a vivir hoy?</h2>
+          <p>¡Entra y descubre un mundo de posibilidades! En nuestra Biblioteca, cada libro es una puerta a una nueva aventura, una ventana hacia la imaginación y un pasaje a universos desconocidos. ¿Qué aventura vas a vivir hoy? Sumérgete en las páginas de nuestros libros y viaja a tierras lejanas, conoce personajes fascinantes y vive emocionantes experiencias. Somos más que un lugar, somos un oasis para los amantes de la lectura, donde la pasión por descubrir historias y aprender se fusiona con el placer de perderse en la magia de las palabras. Explora, sueña y déjate llevar por la maravilla de los libros que te esperan en cada estante de nuestra biblioteca. ¡Bienvenido a un universo de conocimiento, emoción y aventura!</p>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.getElementById("imagen-pasillo").addEventListener("mouseover", function () {
+        this.src = "{{ url_for('static', filename='img/vecteezy_vector-poster-of-magic-books-in-library_14343440.jpg') }}";
+      });
+  
+      document.getElementById("imagen-pasillo").addEventListener("mouseout", function () {
+        this.src = "{{ url_for('static', filename='img/vecteezy_vector-poster-of-magic-books-in-library_14343440.jpg') }}";
+      });
+    </script>
+  
+    <hr>
+    <section id="LibrosRandom">
+      <div class="container">
+        <div class="text-center">
+          <h2 style="font-variant: small-caps;">¿Te animás a abrir la Caja de Pandora?</h2>
+          <p>Desafía lo desconocido con el Verdadero 'AVENTÚRATE' Para aquellos que abrazan las sorpresas sin temor.</p>
+          <p style="font-variant: small-caps; font-weight: bold;">¡Un mundo nuevo te espera valiente aventurero!</p><br>
+  
+          <div class="imagenContainer">
+            <img src="{{ url_for('static', filename='img/ruleta6.gif') }}" alt="Ruleta" class="imagenCircular">
+          </div>
+          <script src="{{ url_for('static', filename='js/scriptrandom.js') }}"></script>
+        </div>
+      </div>
+      <div class="container">
+        <div class="text-center">
+          <div class="textoBoton">
+            <button onclick="abrirPDF()" class="boton-aventura">
+              <span class="texto-boton">¡Aventúrate!</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr>
+    <section id="Cuentos">
+      <div class="containerb">
+        <h2>Sección Cuentos Infantiles</h2>
+        <p>Descubre un mundo mágico lleno de imaginación y aventuras con nuestra colección de cuentos infantiles. Desde
+          historias clásicas hasta nuevas emocionantes aventuras, nuestros libros están diseñados para inspirar,
+          entretener y educar a los más pequeños. Acompaña a personajes encantadores en viajes inolvidables donde la
+          creatividad y la diversión se entrelazan en cada página. ¡Déjate llevar por la magia de la lectura y haz que
+          cada momento sea una nueva aventura!</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='img/blanca2.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+                <div class="card-body">
+                    <h5 class="card-title">Blancanieves y los 7 enanitos</h5>
+                    <p class="card-text">Una reina muy bella siente envidia de su hijastra Blancanieves cuando su espejo mágico le dice que al crecer Blancanieves ha pasado a ser la más bella del reino, y ordena a un soldado que la mate. El soldado se apiada y la deja libre en el bosque, donde encuentra cobijo en una pequeña casita habitada por siete enanitos. Entonces...</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('static', filename='Libros/Cuentos Infantiles/Blancanieves y los siete enanitos.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+          <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/2b1ec8a42f704af8c73aa2cfc55b934a.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title">Ricitos de oro</h5>
+                  <p class="card-text">Paseando por el bosque Ricitos de Oro encuentra una casita abierta y entra. Es la casa de papá y mamá osos, y su hijo el osito. En ella cada uno tiene su plato de la cena, su silla y su cama. Ricitos va probando cada una de estas cosas, para terminar eligiendo siempre las del osito. Así, se come su cenita, rompe su sillita y se queda dormida en su camita. Al llegar los osos...</p>
+              </div>
+              <div class="card-footer">
+                  <a href="{{ url_for('static', filename='Libros/Cuentos Infantiles/Ricitos de Oro.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+          </div>
+      </div>
+      
+      <div class="col">
+        <div class="card h-100">
+            <img src="{{ url_for('static', filename='img/32ee9217986e32ad59d5daf766a9ed02.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Los tres Cerditos</h5>
+                <p class="card-text">Los tres cerditos se tienen que construir una casa porque el lobo los persigue y se los quiere comer. Uno la hace de paja, el otro de madera y el tercero, a pesar de que la construcción es más difícil, de ladrillos. Se aprende que no siempre se tiene que elegir el camino más fácil para hacer las cosas.</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Cuentos Infantiles/Los tres cerditos.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+      <div class="card h-100">
+          <img src="{{ url_for('static', filename='img/hamelin.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+          <div class="card-body">
+              <h5 class="card-title">El Flautista de Hamelin</h5>
+              <p class="card-text">En un pueblito llamado Hamelin se habían instalado gran cantidad de ratones en todas las calles y las casas quitando la comida y esto era porque la reina era muy tacaña y no quería gastar para quitar a los ratones. Pero cuando llegaron a su castillo llamó a un jovencito para que los desapareciera con su flauta y entonces…</p>
+          </div>
+          <div class="card-footer">
+              <a href="{{ url_for('static', filename='Libros/Cuentos Infantiles/El flautista de Hamelin.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+          </div>
+      </div>
+  </div>
+  </section>
+  
+
+    <hr>
+    <section id="Misterio">
+      <div class="containerb">
+        <h2>Sección Misterio</h2>
+        <p>Embárcate en emocionantes misterios diseñados especialmente para mentes curiosas y valientes. Nuestra
+          colección
+          de cuentos de misterio para chicos te invita a resolver enigmas, descubrir secretos ocultos y desentrañar
+          intrigas en cada página. Acompaña a nuestros jóvenes detectives mientras siguen pistas, desenterran misterios
+          y
+          enfrentan emocionantes desafíos. ¡Prepárate para sumergirte en emocionantes aventuras llenas de suspenso y
+          sorpresas en cada esquina!</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='img/dr_Jekyll_mr_hide.png') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+                <div class="card-body">
+                    <h5 class="card-title">Dr. Jekyll y Mr. Hyde</h5>
+                    <p class="card-text">Robert Stevenson nos encarna en la piel del prestigioso abogado Mr Utterson quien deberá descubrir el oscuro secreto de su amigo... el Dr Jekyll.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('static', filename='Libros/Misterio y Terror/El Dr. Jekyll y Mr. Hyde.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+          <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/el_gato_negro.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                  <h5 class="card-title">El gato Negro</h5>
+                  <p class="card-text">Un relato clásico de la gran obra literaria del señor Poe, donde se entremezclan paranoia, misterio y locura.</p>
+              </div>
+              <div class="card-footer">
+                  <a href="{{ url_for('static', filename='Libros/Misterio y Terror/Edgard Allan Poe - El gato negro.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+          </div>
+      </div>
+      
+      <div class="col">
+        <div class="card h-100">
+            <img src="{{ url_for('static', filename='img/El Cuervo.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">El Cuervo</h5>
+                <p class="card-text">Clásico relato en formato de poema con esencia de locura y tristeza, Allan Poe cuenta la llegada de un cuervo a la vida de un joven quien acaba de perder a su amada...</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Misterio y Terror/El Cuervo.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col">
+      <div class="card h-100">
+          <img src="{{ url_for('static', filename='img/historias_fantasticas.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+          <div class="card-body">
+              <h5 class="card-title">Historias Fantásticas</h5>
+              <p class="card-text">Stephen King titula "Historias Fantásticas" a una selección de 13 cuentos, pasando por diferentes atmósferas dentro del género que mejor maneja.</p>
+          </div>
+          <div class="card-footer">
+              <a href="{{ url_for('static', filename='Libros/Misterio y Terror/Stephen King- Historias fantasticas.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+          </div>
+      </div>
+  </div>
+  
+    </section>
+    <hr>
+
+    <section id="Fabulas">
+      <div class="containerb">
+          <h2>Sección Fábulas y Leyendas</h2>
+          <p>Adéntrate en un mundo de sabiduría ancestral y magia con nuestra selección de fábulas y leyendas para chicos. Desde historias clásicas hasta cuentos llenos de fantasía, nuestros libros te transportarán a tierras lejanas habitadas por criaturas místicas y personajes legendarios. Acompaña a valientes héroes y astutos animales en sus fascinantes viajes llenos de enseñanzas y lecciones de vida. Descubre la magia de la tradición oral a través de historias atemporales que encantarán y educarán a pequeños y grandes por igual.</p>
+          <div class="row row-cols-1 row-cols-md-4 g-4">
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/24992f78798b564b20234b93505a2480.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+                      <div class="card-body">
+                          <h5 class="card-title">El cuervo y el Zorro</h5>
+                          <p class="card-text">El cuervo abrió el pico para cantar, pero el queso se cayó y el zorro lo cogió y se fue. Esta historia nos enseña a no dejarnos engañar por falsos aduladores que sólo quieren sacar algún provecho</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Fabulas Mitos y Leyendas/El cuervo y el zorro.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/6b9cd140b1dff2dd3e3ac5a0b951219d.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+                      <div class="card-body">
+                          <h5 class="card-title">El Príncipe Feliz</h5>
+                          <p class="card-text">El Príncipe Feliz es un emotivo cuento que narra la historia de una majestuosa estatua dorada y una golondrina. La estatua, conocida como el Príncipe Feliz, se alza sobre una ciudad y es admirada por su belleza y riqueza. Sin embargo, tras una revelación inesperada, la estatua y la golondrina forman una alianza inusual.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Fabulas Mitos y Leyendas/El principe feliz.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/trajerey.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+                      <div class="card-body">
+                          <h5 class="card-title">El Traje nuevo del Emperador</h5>
+                          <p class="card-text">Cuenta la historia de un emperador que fue estafado al comprar unas telas, pero nadie se atrevía a decirle la verdad, hasta que al fin un niño consiguió que 'abriera los ojos'.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Fabulas Mitos y Leyendas/El traje nuevo del emperador.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                <div class="card h-100">
+                    <img src="{{ url_for('static', filename='img/historias_fantasticas.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Historias Fantásticas</h5>
+                        <p class="card-text">Stephen King titula "Historias Fantasticas" a una seleccion de 13 cuentos, pasando por diferentes atmosferas dentro del genero que mejor maneja.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('static', filename='Libros/Misterio y Terror/Stephen King- Historias fantasticas.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                    </div>
+                </div>
+            </div>
+            
+    </section>
+    <hr>
+
+    <section id="NocheDeTormentas">
+      <div class="containerb">
+          <h2>Sección para noches de tormenta</h2>
+          <p>¡Prepárate para una experiencia emocionante bajo el rugido de la tormenta! En nuestra sección 'Noches de Tormenta', te invitamos a sumergirte en historias de intriga y suspenso que te mantendrán al borde de tu asiento mientras los relámpagos iluminan el cielo y los truenos retumban en la distancia. Desde misteriosos secretos enterrados en el pasado hasta encuentros con criaturas de la noche, estas narrativas te transportarán a mundos oscuros y fascinantes donde el peligro acecha en cada esquina. ¿Estás listo para enfrentar tus miedos y dejarte envolver por la emoción de nuestras 'Noches de Tormenta'?</p>
+          <div class="row row-cols-1 row-cols-md-4 g-4">
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/trueno.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+                      <div class="card-body">
+                          <h5 class="card-title">El ruido del trueno</h5>
+                          <p class="card-text">La imaginacion de Ray bradbury nos trae una aventura de caza al pasado con la condicion de no alterar la parado del tiempo.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Noches de Tormenta/Ray Bradbury - El ruido de un trueno.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/elfaro.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+                      <div class="card-body">
+                          <h5 class="card-title">El Faro del Fin del Mundo</h5>
+                          <p class="card-text">Una de las tantas obras de Jlio verne,donde esta vez narrara la historia de 3 fareros apostados en la patagonia en una isla supuestamente deshabitada.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Noches de Tormenta/Julio Verne - El faro del fin del mundo.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/hoja.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+                      <div class="card-body">
+                          <h5 class="card-title">“Hoja” de Niggle</h5>
+                          <p class="card-text">Tolkien y su universo nos comparten la creacion de una nueva naturalez a partir de la caida de una hoja... increible.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Noches de Tormenta/J.R.R.Tolkien - Hoja de Niggle.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="{{ url_for('static', filename='img/elfantasma.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+                      <div class="card-body">
+                          <h5 class="card-title">El Fantasma de Cantervielle</h5>
+                          <p class="card-text">Cuento imposible de no conocer escrito por oscar wilde , donde nos cuenta las mil maneras de un fantasma de asustar a los visitantes de su mansion.</p>
+                      </div>
+                      <div class="card-footer">
+                          <a href="{{ url_for('static', filename='Libros/Noches de Tormenta/FantasmaCanterville.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+  
+
+    <hr>
+    <section id="aventuras">
+      <div class="containerb">
+        <h2>Sección Aventura y Acción</h2>
+        <p>¡Prepárate para una adrenalina pura con nuestra sección de Aventura y Acción! Sumérgete en emocionantes relatos llenos de peligros, héroes valientes y emocionantes hazañas que te dejarán sin aliento. Desde expediciones en busca de tesoros perdidos hasta enfrentamientos con villanos temibles, nuestros libros te llevarán a través de giros inesperados y emocionantes desafíos. Únete a nuestros intrépidos protagonistas en viajes épicos donde la valentía y la astucia son la clave para superar cualquier obstáculo. ¿Estás listo para embarcarte en una emocionante aventura llena de acción?</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/Robinson.png') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+              <div class="card-body">
+                <h5 class="card-title">Las Aventuras de Robinson Crusoe</h5>
+                <p class="card-text">Un joven de 18 años desobedece a su padre, se niega a estudiar leyes y se escapa para vivir aventuras en el mar. Aunque la muerte le ha rozado varias ...</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Aventura y accion/Aventuras de Robinson Crusoe.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/cohete.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">El regalo</h5>
+                <p class="card-text">El día siguiente sería Navidad y, mientras los tres se dirigían a la estación de naves espaciales, el padre y la madre estaban preocupados. Era el primer vuelo que el niño realizaría por el espacio, su primer viaje en cohete, y deseaban que fuera lo más agradable posible. Cuando...</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Aventura y accion/El regalo.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/gulliver.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Los Viajes de Gulliver</h5>
+                <p class="card-text">Tener la posibilidad de abordar una obra como Los viajes de Gulliver del escritor irlandés Jonathan Swift, es adentrarse en el sorprendente mundo de la sátira y del profundo conocimiento de los misterios de la naturaleza humana. Los viajes hacen parte de una trama en donde las experiencias obtenidas en las diversas aventuras que se presentan.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Aventura y accion/Los Viajes de Gulliver.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/isla.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">La isla del Tesoro</h5>
+                <p class="card-text">La isla del tesoro narra una aventura de un tiempo lejano, en el que todavía había piratas y tesoros escondidos en islas desiertas. En esta novela, un mapa de una isla cae en manos del joven Jim Hawkins. El mapa indica el lugar donde el mayor pirata de todos los tiempos ha escondido su botín…</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Aventura y accion/Stevenson Robert Louise - La isla del tesoro.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <hr>
+    <section id="Anime">
+      <div class="containerb">
+        <h2>Sección Animé</h2>
+        <p>El anime o アニメ es un término con el que se identifica en general a la animación de procedencia japonesa. Hablamos de una industria muy potente, que fusiona el entretenimiento con la herencia cultural del país. Una de sus grandes virtudes es haber sabido seducir a públicos de cualquier gusto y edad. Toda generación guarda recuerdos de algún anime, pero internet lo ha impulsado aún más. Con los otakus como grandes embajadores, a día de hoy resulta un fenómeno global que influye en la música, el cine, la moda o los videojuegos. dirigido a públicos diversos y abarcar un amplio rango de temas, puede ser complicado definirlo. Una de sus características principales es el desarrollo de tramas complejas a lo largo de muchos episodios. Así se diferenciaba de producciones occidentales, más orientadas al público infantil. Ha tratado temas como la relación con la naturaleza, el sentido colectivo del deber y hasta el existencialismo. Te animás a adentrarte en este maravilloso mundo de magia y fantasía?</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/trueno.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+              <div class="card-body">
+                <h5 class="card-title">El ruido del trueno</h5>
+                <p class="card-text">La imaginación de Ray Bradbury nos trae una aventura de caza al pasado con la condición de no alterar la paradoja del tiempo.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Noches_de_Tormenta/Ray_Bradbury_El_ruido_de_un_trueno.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/elfaro.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+              <div class="card-body">
+                <h5 class="card-title">El Faro del Fin del Mundo</h5>
+                <p class="card-text">Una de las tantas obras de Julio Verne, donde esta vez narrará la historia de 3 fareros apostados en la Patagonia en una isla supuestamente deshabitada.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Noches_de_Tormenta/Julio_Verne_El_faro_del_fin_del_mundo.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/hoja.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">“Hoja” de Niggle</h5>
+                <p class="card-text">Tolkien y su universo nos comparten la creación de una nueva naturaleza a partir de la caída de una hoja... increíble.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Noches_de_Tormenta/J_R_R_Tolkien_Hoja_de_Niggle.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/elfantasma.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">El Fantasma de Canterville</h5>
+                <p class="card-text">Cuento imposible de no conocer escrito por Oscar Wilde, donde nos cuenta las mil maneras de un fantasma de asustar a los visitantes de su mansión.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Noches_de_Tormenta/FantasmaCanterville.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="Didactica">
+      <div class="containerb">
+        <h2>Sección Didáctica</h2>
+        <p>Explora nuestra sección didáctica, donde el aprendizaje se convierte en una aventura emocionante. Descubre libros diseñados para estimular la curiosidad y fomentar el conocimiento en los más jóvenes. Desde libros de actividades interactivas hasta guías educativas sobre una amplia gama de temas, nuestra colección didáctica ofrece recursos divertidos y enriquecedores para el desarrollo integral de los niños. Acompaña a nuestros personajes mientras exploran el mundo que los rodea, aprenden nuevos conceptos y desarrollan habilidades importantes para el aprendizaje y la vida. ¡Haz del aprendizaje una experiencia emocionante con nuestros libros didácticos!</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/didactia1.png') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+              <div class="card-body">
+                <h5 class="card-title">Animales rimados y no tantos</h5>
+                <p class="card-text">En 'Animales Rimados y no Tantos', los niños encontrarán una encantadora colección de versos y divertidas ilustraciones que presentan animales inusuales en situaciones aún más peculiares. Este cuento cautivador invita a los lectores jóvenes a explorar la diversidad del reino animal mientras disfrutan de rimas ingeniosas y personajes memorables.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Didactica/01. Animales rimados y no tantos autor Cultura Argentina.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/didactia2.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Inventos divertidos para Niños</h5>
+                <p class="card-text">En 'Inventos Divertidos para Niños', descubre una colección de actividades creativas que despiertan la imaginación y fomentan el aprendizaje práctico. Con proyectos simples y emocionantes, este libro es una guía perfecta para niños curiosos que desean explorar el mundo de la ciencia y la creatividad desde casa.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Didactica/1 Libro de inventos divertidos para niños autor John E. Thomas.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/didactia3.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Manualidades con materiales de desecho</h5>
+                <p class="card-text">Descubre la magia de crear con 'Manualidades con Materiales de Desecho'. Este libro te guía a través de proyectos creativos que transforman objetos cotidianos en obras de arte. Con instrucciones simples y materiales reciclados, los niños pueden dar rienda suelta a su imaginación mientras aprenden sobre la importancia del cuidado del medio ambiente.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Didactica/13 Manualidades con material de desecho autor Miguel Santos Arévalo.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/didactia.png') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Completa las frases con rimas</h5>
+                <p class="card-text">Con 'Completa las Frases con Rimas', los niños se sumergen en un mundo de diversión y aprendizaje. Este libro desafía su creatividad al completar frases con palabras que riman, estimulando así su pensamiento lateral y habilidades lingüísticas. Con actividades simples y coloridas ilustraciones, cada página ofrece una oportunidad para jugar y aprender mientras se desarrollan habilidades clave para la lectura y escritura.</p>
+              </div>
+              <div class="card-footer">
+                <a href="{{ url_for('static', filename='Libros/Didactica/15. Completa las frases con rimas autor Celeste Rodriguez Martin.pdf') }}" class="btn btn-custom btn-block" target="_blank">Aventúrate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <hr>
+    <section id="Audiolibros">
+      <div class="containerb">
+        <h2>Sección Audiolibros</h2>
+        <p>¡Adéntrate en nuestro mundo de audiolibros de cuentos y déjate llevar por emocionantes aventuras narradas! Sumérgete en historias fascinantes que cautivarán tus sentidos y alimentarán tu imaginación. Desde cuentos clásicos hasta relatos modernos, nuestra colección de audiolibros ofrece una amplia variedad de opciones para todos los gustos. Embárcate en viajes mágicos junto a valientes héroes, descubre mundos fantásticos poblados por criaturas asombrosas y vive emocionantes giros y vueltas en cada narración. Con la narración experta de nuestros talentosos narradores, cada historia cobra vida de una manera única y envolvente. Deja que el poder del sonido te transporte a lugares lejanos y te lleve en un viaje de aventuras sin límites. Con nuestros audiolibros de cuentos, cada momento se convierte en una oportunidad para explorar nuevos horizontes y disfrutar del placer intemporal de una buena historia. ¡Prepárate para sumergirte en un mundo de fantasía y diversión!</p>
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/gatoconbotas.jpg') }}" class="imagenes con-borde card-img-top img-fluid" alt="..." style="width: 300px; height: 350px;">
+              <div class="card-body">
+                <h5 class="card-title">El gato con Botas</h5>
+                <p class="card-text">'El Gato con Botas' lleva a los lectores a un viaje emocionante de astucia y aventuras. Este cuento clásico sigue las travesuras de un gato ingenioso que guía a su amo hacia la riqueza y la felicidad, desafiando a un malvado ogro en el camino. Con humor y lecciones morales, enseña la importancia del ingenio y la determinación para lograr el éxito.</p>
+              </div>
+              <div class="card-footer">
+                <audio controls="controls" id="audiocuento1" oncontextmenu="return false" preload="none">
+                  <source type="audio/mp3" src="https://cuentosparadormir.com/files/audiocuentos/el-gato-con-botas.mp3" />
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/hanselygretel.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Hansel y Gretel - La casita de Chocolate</h5>
+                <p class="card-text">En "Hansel y Gretel: La Casita de Chocolate", dos niños son abandonados en el bosque y encuentran una casa hecha de dulces. Sin embargo, descubren que es una trampa de una bruja devoradora de niños. Con astucia, logran vencerla y escapar. Este cuento resalta el valor infantil y la superación de desafíos.</p>
+              </div>
+              <div class="card-footer">
+                <audio controls="controls" id="audiocuento2" width="215" oncontextmenu="return false" preload="none">
+                  <source type="audio/mp3" src="https://cuentosparadormir.com/files/audiocuentos/lacasitadechocolate.mp3" />
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/pinocchio.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Pinocho</h5>
+                <p class="card-text">"Pinocho" sigue las travesías de un títere de madera que desea convertirse en un niño real. En su viaje, enfrenta desafíos, aprende lecciones sobre la honestidad y la responsabilidad, y finalmente alcanza su objetivo al salvar a su padre y convertirse en humano.</p>
+              </div>
+              <div class="card-footer">
+                <audio controls="controls" id="audiocuento3" width="215" oncontextmenu="return false" preload="none">
+                  <source type="audio/mp3" src="https://cuentosparadormir.com/files/audiocuentos/pinocho.mp3" />
+                </audio>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="{{ url_for('static', filename='img/simbad.jpg') }}" class="imagenes con-borde card-img-top img-fluid" style="width: 300px; height: 350px;" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Simbad el Marino</h5>
+                <p class="card-text">El cuento de Simbad sigue las siete travesías de Simbad el Marino, un comerciante de Bagdad. En sus viajes, enfrenta peligros marinos y desafíos, pero gracias a su ingenio, sobrevive y acumula riquezas. A lo largo de sus aventuras, Simbad aprende lecciones sobre la generosidad y la responsabilidad, regresando finalmente a Bagdad como un hombre sabio y benevolente.</p>
+              </div>
+             
+              <div class="card-footer">
+                <audio controls="controls" id="audiocuento" width="215" oncontextmenu="return false" preload="none">
+                  <source type="audio/mp3"
+                    src="https://cuentosparadormir.com/files/audiocuentos/simbad-el-marino.mp3" />
+                </audio>
+              </div>
+            </div>
+          </div>
+    </section><br><br><br><br><br><br>
+
+    <footer>
+      <div class="footer-content">
+        <img class="imgfooter" src="{{ url_for('static', filename='img/cc3.png') }}" alt="">
+        <div class="footer-text">
+          <span>The CodersCrusaders:</span>
+          <p>Monica Carena, Flavio Ramires, Cesar Torres, Roberto Steklein</p>
+          <p>&copy; 2024 Biblioteca para Niños - Todos los derechos reservados</p>
+        </div>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/mostrarNombreUsuario.js') }}" defer></script> <!-- Vincula el script JavaScript -->
+    
+</body>
+
+</html>

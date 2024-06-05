@@ -1,0 +1,138 @@
+
+.containerr {
+    max-width: 750px; /* Ajusta el máximo ancho del contenido según sea necesario */
+    margin: 0 auto;
+    padding: 30px;
+    margin-bottom: 50px;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px #4c4c4e8f;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+.gender-options {
+    display: flex;
+    align-items: center;
+    /* Alinea verticalmente los elementos */
+}
+
+.gender-option {
+    display: flex;
+    /* Hacemos que los elementos dentro de gender-option se distribuyan horizontalmente */
+    align-items: center;
+    /* Alineamos verticalmente los elementos dentro de gender-option */
+    margin-right: 20px;
+    /* Espacio entre los grupos de género */
+}
+
+.gender-label {
+    margin-right: 5px;
+    /* Espacio entre la etiqueta y el radio button */
+    font-size: 14px;
+    /* Tamaño de fuente para las etiquetas */
+    margin-left: 5px;
+    /* Espacio entre el icono y el texto */
+}
+
+.gender-text {
+    font-size: 12px;
+    /* Tamaño de fuente para el texto del género */
+    font-weight: bold;
+}
+
+input[type="radio"] {
+    margin-left: 5px;
+    /* Espacio entre la etiqueta y el radio button */
+}
+
+/* Para mostrar las imágenes */
+.fa-child-dress,
+.icono-svg svg {
+    fill: #efafe9;
+    /* Cambiar el color de relleno */
+    width: 20px;
+    /* Cambiar el ancho */
+    height: 13px;
+    /* Cambiar la altura */
+    margin-left: 5px;
+    font-size: 12px;
+    /* Ajusta el tamaño de la fuente según sea necesario */
+    vertical-align: text-bottom;
+}
+
+.fa-child,
+.icono-svg svg {
+    fill: #74C0FC;
+    /* Cambiar el color de relleno */
+    width: 20px;
+    /* Cambiar el ancho */
+    height: 13px;
+    /* Cambiar la altura */
+    margin-left: 5px;
+    font-size: 12px;
+    /* Ajusta el tamaño de la fuente según sea necesario */
+    vertical-align: text-bottom;
+}
+
+/* Alinea los iconos a la derecha */
+.gender-option.femenino-option .icono-svg-femenino {
+    margin-left: auto;
+    /* Hace que el icono .fa-child-dress se alinee a la derecha */
+}
+
+.gender-option.masculino-option .icono-svg-masculino {
+    margin-left: auto;
+    /* Hace que el icono .fa-child se alinee a la derecha */
+}
+
+input[type="text"],
+input[type="date"],
+select,
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 22px);
+    /* Ancho igual al 100% del contenedor menos el padding y bordes */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: calc(50% - 22%);
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #afa8a8;
+}
+
+.alerta {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+    /* Ajusta la distancia entre el campo y la alerta */
+}
+
+#registro {
+    margin-bottom: 100px;
+    /* Ajusta este valor según sea necesario para dejar suficiente espacio para el footer */
+}
+

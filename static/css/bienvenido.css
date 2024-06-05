@@ -1,0 +1,293 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../img/151a35679b6479afbdf99cc32e1fc4d0.jpg");  /*The image used as the header's background*/
+    background-size: contain;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    padding-top: 0px;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        height: 150px; /* Ajusta la altura para dispositivos móviles */
+        padding: 3% 5%; /* Ajusta el relleno para dispositivos móviles */
+    }
+}
+
+/* Navigation */
+.navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-left a,
+.nav-right a {
+    color: rgba(255, 255, 255, 0.568);
+    text-decoration: none;
+    font-variant: small-caps;
+    padding: 0 20px; /* Espacio entre los enlaces */
+    padding-bottom: 10px;
+    align-items: center; /* Centrar verticalmente los elementos */
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+}
+
+.nav-right {
+    position: absolute; /* Posicionar absolutamente */
+    right: 0; /* Alinear con el borde derecho del contenedor principal */
+}
+
+.divider {
+    border-left: 4px solid rgba(255, 255, 255, 0.568); /* Línea vertical como divisor */
+    font-weight: bold;
+    height: 25px; /* Altura del divisor */
+    line-height: 30px; /* Alineación del texto con respecto al alto */
+    margin: 0 30px; /* Espacio alrededor del divisor */
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.star {
+    margin-right: 5px;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px ;
+  }
+  
+  /* Dropdown button */
+  .dropbtn {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.568);
+    padding: 14px 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-variant: small-caps;
+    /* align-items: center; */
+  }
+  
+  .dropbtn:hover {
+    background-color: #dddddd00; /* Cambiado para resaltar el hover */
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.479), 0 4px 12px rgba(0, 0, 0, 0.479);
+    transform: scale(1.1);
+  }
+
+  /* Dropdown content (hidden by default) */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #076d6d;
+    min-width: 160px;
+    z-index: 1;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #444;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+/* Estilos para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    /*.nav-left,
+    .nav-right {
+        position: static; /* Cambia la posición a estática para que los enlaces estén en línea 
+    }*/
+
+    .nav-left a,
+    .nav-right a {
+        padding: 10px; /* Ajusta el relleno para dispositivos móviles */
+    }
+
+    .divider {
+        display: none; /* Oculta el divisor en dispositivos móviles */
+    }
+}
+.imagen-pasillo {
+    border-radius: 50px;
+    border-color: darkcyan;
+    box-shadow: 0 0 0px 10px rgba(141, 136, 143, 0.638);
+    transition: ease-out all 1s;
+    margin-bottom: 10px;
+}
+
+.imagenContainer {
+    display: inline-block;
+    width: 220px;
+    height: 220px;
+    margin-left: -2em;
+}
+.imagenCircular {
+    border-radius: 50%;
+    width: 250px;
+    height: 240px;
+    border: 5px solid #a80707;
+    transition: 0.3s ease;
+    align-self:  200px center;
+}
+
+.imagenCircular:hover {
+    box-shadow: 0 0 10px 10px rgba(141, 136, 143, 0.638);
+}
+
+.boton-aventura {
+    font-variant: small-caps;
+    background-color: #554b4b;
+    color: white;  
+    border-radius: 5PX;
+    padding: 5px;
+    cursor: pointer;
+    width: 25%;
+  
+    
+}
+
+.boton-aventura:hover {
+    font-variant: small-caps;
+    font-weight: bold;
+    color: #fff;
+    box-shadow:0 0 10PX 10PX rgba(141, 136, 143, 0.638);
+    background-color: #0b08f3;
+}
+
+
+
+.containerb {
+    width: 68%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.card {
+    border-radius: 50%/100px;
+    border-color: 2px solid #272727;
+    box-shadow: 0 0 8px 8px rgba(80, 78, 82, 0.9);
+    text-align: center;
+    
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+    align-self: center;
+    
+}
+
+.card img:hover {
+    transform: scale(1.1);
+    border: 2px solid rgb(219, 13, 13, 0.911);
+}
+
+.con-borde {
+    border-bottom: 2px solid rgba(219, 13, 13, 0.911);
+    border-top: 2px solid rgba(219, 13, 13, 0.911);
+    padding: 0%;
+    border-radius: 10% !important;
+   
+}
+
+.card-body{
+    width: 97%;
+    align-self: center;
+}
+
+.card-title{
+    text-align: center;
+}
+
+.card-text{
+    text-align: justify;
+   
+}
+
+.card-footer {
+    padding: 0px;
+    text-align: center;
+    border-radius: 25px !important;
+    border-bottom: 2px solid rgb(219, 13, 13, 0.911);
+    border-top: 2px solid rgb(219, 13, 13, 0.911);
+    align-self: center;
+    width: 98%;
+    margin-bottom: 0px;
+    margin-top: 2px;
+    
+}
+
+.card-footer:hover {
+    border-bottom: 2px solid rgb(219, 13, 13, 0.911);
+    border-top: 2px solid rgb(219, 13, 13, 0.911);
+    
+} 
+
+.btn-custom {
+    border: 2px solid transparent;
+   
+}
+
+.btn-custom:hover {
+    transform: scale(1.1);
+    font-weight: bold;
+    font-variant: small-caps;
+}
+
+#login {
+    justify-content: center;
+    align-items: stretch;
+    height: min-content;
+}
+
+#registro {
+    margin-bottom: 100px;
+    /* Ajusta este valor según sea necesario para dejar suficiente espacio para el footer */
+}
+
+.card-footer audio {
+    display: block; /* Asegurarse de que el elemento audio se comporte como un bloque */
+    margin: 0 auto; /* Para centrar horizontalmente el elemento audio dentro del contenedor */
+    max-width: 100%;
+}
+
+  /* Estilo para el botón sticky */
+.sticky-btn {
+    position: fixed;
+    bottom: 125px;
+    right: 10px;
+    background-color: #0b08f3;
+    color: #fff;
+    box-shadow: white;
+    border-radius: 5px;
+    padding: 5px 5px;
+    font-size: 10px;
+    cursor: pointer;
+    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */
+    width: auto;
+    height: auto;
+    line-height: 1;
+}

@@ -1,0 +1,235 @@
+
+@media screen and (max-width: 768px) {
+    header {
+        height: 150px;
+        /* Ajusta la altura para dispositivos móviles */
+        padding: 3% 5%;
+        /* Ajusta el relleno para dispositivos móviles */
+    }
+}
+
+.banner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imagenContainer {
+    text-align: center;
+    display: inline-block;
+    width: 220px;
+    height: 220px;
+    margin-left: -4em;
+}
+
+section {
+    padding: 20px;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+
+.imagenCircular {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    border: 5px solid #272727;
+    transition: transform 0.3s ease;
+    text-align: center;
+    box-shadow:
+        0 0 10px 0 rgba(72, 72, 73, 0.575),
+        /* Sombras más claras */
+        0 0 20px 0 rgba(102, 102, 103, 0.575),
+        /* Sombras intermedias */
+        0 0 30px 0 rgba(132, 132, 133, 0.575),
+        /* Sombras más oscuras */
+        0 0 40px 0 rgba(162, 162, 163, 0.575),
+        /* Sombras aún más oscuras */
+        0 0 50px 0 rgba(192, 192, 193, 0.575);
+    /* Sombras más oscuras */
+}
+
+.imagenCircular {
+    border-radius: 50%;
+    /* Hace que el borde tenga forma de círculo */
+    width: 300px;
+    /* Ancho de la imagen */
+    height: 300px;
+    /* Altura de la imagen */
+    overflow: hidden;
+    /* Oculta cualquier contenido que se desborde */
+}
+
+.imagenCircular img {
+    width: 100%;
+    /* Hace que la imagen ocupe todo el espacio disponible dentro del círculo */
+    height: auto;
+    /* Mantiene la relación de aspecto original de la imagen */
+}
+
+.imagenCircular:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 0 15px 0 rgba(72, 72, 73, 0.575),
+        /* Sombras más claras */
+        0 0 25px 0 rgba(102, 102, 103, 0.575),
+        /* Sombras intermedias */
+        0 0 35px 0 rgba(132, 132, 133, 0.575),
+        /* Sombras más oscuras */
+        0 0 45px 0 rgba(162, 162, 163, 0.575),
+        /* Sombras aún más oscuras */
+        0 0 55px 0 rgba(192, 192, 193, 0.575);
+    /* Sombras más oscuras */
+}
+
+#hoveredImage {
+    display: none;
+    /* Ocultar la imagen alternativa por defecto */
+}
+
+
+button {
+    width: calc(50% - 22%);
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.rating-label {
+    font-weight: bold;
+    font-size: 1.1em;
+    /* Ajusta el tamaño de la fuente según tu preferencia */
+}
+
+.star {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.star.active,
+.star:hover {
+    color: #eba50f;
+    /* Cambia el color según lo deseado */
+}
+
+#opinion-container {
+    margin-top: 25px;
+    /* Ajusta el espacio entre el contenedor de estrellas y el contenedor de comentarios */
+}
+
+#opinion {
+    width: 100%;
+    /* Ajusta el ancho del textarea */
+    padding: 10px;
+    /* Ajusta el espacio interno del textarea */
+    font-size: 16px;
+    /* Ajusta el tamaño de la fuente según tu preferencia */
+    border: 2px solid #571ae4;
+    /* Ajusta el estilo del borde */
+    border-radius: 5px;
+    /* Ajusta el radio del borde */
+}
+
+button#submit-opinion {
+    margin-top: 25px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    /* Ajusta el espacio interno del botón */
+    border: none;
+    /* Elimina el borde del botón */
+    border-radius: 5px;
+    /* Ajusta el radio del borde del botón */
+    cursor: pointer;
+    /* Cambia el cursor al pasar sobre el botón */
+}
+
+#submit-opinion:hover {
+    background-color: #555;
+    /* Cambia el color de fondo del botón al pasar el ratón sobre él */
+}
+
+#thank-you-message {
+    display: none;
+    /* El mensaje de agradecimiento está oculto inicialmente */
+    font-weight: bold;
+    font-size: 1.1em;
+    /* Ajusta el tamaño de la fuente según tu preferencia */
+}
+
+
+.carrousel-img {
+    justify-content: center;
+    max-width: 100%;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin: auto;
+}
+
+
+
+.carousel-container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #55515149;
+    overflow: hidden;
+    margin-left: 1cm;
+    margin-right: 1cm;
+   
+}
+
+
+
+#registro {
+    margin-bottom: 100px;
+    /* Ajusta este valor según sea necesario para dejar suficiente espacio para el footer */
+}
+
+
+.carousel-3-img {
+    max-width: 250px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    transition: transform 0.3s ease;
+    align-self: justify center;
+    border: #ffffff solid 3px;
+    border-radius: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+
+.carrousel-3-img {
+    justify-content: space-between;
+    max-width: 350px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    margin: auto;   
+}
+
+.carousel-3 .carousel-inner {
+    width: 100%;
+    margin: auto;
+    background-color: #55515100 !important;
+    overflow: hidden;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
+}
+
+
+.carousel-3 .row {
+    justify-content: center;
+}
