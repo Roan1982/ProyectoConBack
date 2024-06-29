@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory, g
 import pymysql
 from functools import wraps
 from datetime import datetime
@@ -11,11 +11,22 @@ UPLOAD_FOLDER_PDF = 'static/Libros/'  # Carpeta donde se almacenarán los PDFs s
 ALLOWED_EXTENSIONS_IMG = {'png', 'jpg', 'jpeg', 'gif'}
 ALLOWED_EXTENSIONS_PDF = {'pdf'}
 
+def datetimeformat(value, format='%Y-%m-%d %H:%M:%S'):
+    """Format a datetime object."""
+    return value.strftime(format)
 
 app = Flask('proyecto_Biblioteca')
 app.config['UPLOAD_FOLDER_IMG'] = UPLOAD_FOLDER_IMG
 app.config['UPLOAD_FOLDER_PDF'] = UPLOAD_FOLDER_PDF
 bcrypt = Bcrypt(app)
+
+@app.template_filter('datetimeformat')
+def datetimeformat_filter(value, format='%Y-%m-%d %H:%M:%S'):
+    """Format a datetime object."""
+    return value.strftime(format)
+
+app.jinja_env.filters['datetimeformat'] = datetimeformat
+
 
 # Verificar si la extensión del archivo es permitida
 def allowed_file(filename, allowed_extensions):
@@ -25,6 +36,7 @@ def allowed_file(filename, allowed_extensions):
 # Configuración de la conexión a la base de datos (ajusta los datos según tu configuración)
 db = pymysql.connect(host="localhost", user="root", password="root", database="biblioteca")
 cursor = db.cursor()
+
 
 
 def role_required(roles):
@@ -133,10 +145,15 @@ def registro():
         # Encriptar la contraseña
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     
-        # Insertar los datos en la base de datos
-        sql = "INSERT INTO usuarios (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, hashed_password)
+        # Rol predeterminado (2 para usuario, por ejemplo)
+        rol_id = 2
         
+        # Insertar los datos en la base de datos
+        sql = "INSERT INTO usuarios (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, password, rol_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, hashed_password, rol_id)
+        
+        # Conexión a la base de datos (debes establecer previamente la conexión `db`)
+        cursor = db.cursor()
         cursor.execute(sql, val)
         db.commit()
         
@@ -149,14 +166,40 @@ def registro():
         flash('Error al registrar. Inténtalo nuevamente.', 'error')
         return {'success': False, 'message': 'Error al registrar. Inténtalo nuevamente.'}
 
-@app.route('/libros_seccion')
-def libros_seccion():
-    # Consulta los libros de la base de datos
-    sql = "SELECT libro_id, titulo, imagen, resenia, pdf FROM libros"
-    cursor.execute(sql)
+@app.route('/libros_seccion', defaults={'genero_id': None})
+@app.route('/libros_seccion/<int:genero_id>')
+def libros_seccion(genero_id):
+    cursor = g.db.cursor()
+    if genero_id:
+        # Consulta los libros de la base de datos según la sección (género)
+        sql = """
+        SELECT l.libro_id, l.titulo, a.nombre, a.apellidos, l.imagen, l.resenia, l.pdf, g.nombre AS genero
+        FROM libros l
+        JOIN autores a ON l.autor_id = a.autor_id
+        JOIN generos_literarios g ON l.genero_id = g.genero_id
+        WHERE l.genero_id = %s
+        """
+        cursor.execute(sql, (genero_id,))
+    else:
+        # Consulta todos los libros si no se ha seleccionado un género
+        sql = """
+        SELECT l.libro_id, l.titulo, a.nombre, a.apellidos, l.imagen, l.resenia, l.pdf, g.nombre AS genero
+        FROM libros l
+        JOIN autores a ON l.autor_id = a.autor_id
+        JOIN generos_literarios g ON l.genero_id = g.genero_id
+        """
+        cursor.execute(sql)
+    
     libros = cursor.fetchall()
     
-    return render_template('libros_seccion.html', libros=libros)
+    # Obtener el nombre del género si se seleccionó uno
+    genero = None
+    if genero_id:
+        cursor.execute("SELECT nombre FROM generos_literarios WHERE genero_id = %s", (genero_id,))
+        genero = cursor.fetchone()
+    
+    return render_template('libros_seccion.html', libros=libros, genero=genero)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -354,6 +397,107 @@ app.secret_key = 'ClaveSecretaDeAppSecretKey'
 @app.route('/static/Libros/<pdf_filename>')
 def ver_pdf(pdf_filename):
     return send_from_directory('static/Libros', pdf_filename)
+
+
+
+# @app.route('/admin/usuarios')
+# @role_required(['admin'])
+# def listar_usuarios():
+#     cursor.execute("SELECT u.id_usuario, u.nombre, u.apellido, u.username, u.email, r.nombre AS rol FROM usuarios u JOIN roles r ON u.rol_id = r.id")
+#     usuarios = cursor.fetchall()
+#     return render_template('listar_usuarios.html', usuarios=usuarios)
+
+@app.route('/admin/usuarios')
+@role_required(['admin'])
+def listar_usuarios():
+    # Realiza la consulta SQL para obtener todos los usuarios
+    cursor.execute("SELECT * FROM usuarios")
+    usuarios = cursor.fetchall()  # Obtén todos los resultados como una lista de diccionarios o tuplas
+
+    return render_template('listar_usuarios.html', usuarios=usuarios)
+
+
+
+@app.route('/admin/agregar_usuario', methods=['GET', 'POST'])
+@role_required(['admin'])
+def agregar_usuario():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        username = request.form['username']
+        email = request.form['email']
+        fecha_nacimiento = request.form['fecha_nacimiento']
+        genero = request.form['genero']
+        pais = request.form['pais']
+        if pais == 'OTRO':
+            pais = request.form['otro_pais']
+        password = request.form['password']
+        rol_id = request.form['rol_id']
+
+        # Convertir fechas a formatos correctos
+        fecha_nacimiento = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
+        fecha_registro = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Encriptar la contraseña
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        sql = "INSERT INTO usuarios (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, password, rol_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, hashed_password, rol_id)
+        cursor.execute(sql, val)
+        db.commit()
+
+        flash('Usuario agregado correctamente.', 'success')
+        return redirect(url_for('listar_usuarios'))
+
+    cursor.execute("SELECT id, nombre FROM roles")
+    roles = cursor.fetchall()
+    return render_template('agregar_usuario.html', roles=roles)
+
+# Definir la ruta para editar un usuario específico
+@app.route('/admin/editar_usuario/<int:user_id>', methods=['GET', 'POST'])
+@role_required(['admin'])  # Asegúrate de tener esta función decoradora definida para verificar los roles
+def editar_usuario(user_id):
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        email = request.form['email']
+        fecha_nacimiento = request.form['fecha_nacimiento']
+        genero = request.form['genero']
+        pais = request.form['pais']
+        rol_id = request.form['rol_id']
+
+        # Convertir fecha de nacimiento al formato correcto si es necesario
+        fecha_nacimiento = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
+
+        # Actualizar los datos en la base de datos
+        sql = "UPDATE usuarios SET nombre=%s, apellido=%s, email=%s, fecha_nacimiento=%s, genero=%s, pais=%s, rol_id=%s WHERE id_usuario=%s"
+        val = (nombre, apellido, email, fecha_nacimiento, genero, pais, rol_id, user_id)
+        cursor.execute(sql, val)
+        db.commit()
+
+        flash('Usuario editado correctamente.', 'success')
+        return redirect(url_for('listar_usuarios'))
+
+    # Obtener los datos del usuario y los roles para el formulario de edición
+    cursor.execute("SELECT * FROM usuarios WHERE id_usuario = %s", (user_id,))
+    usuario = cursor.fetchone()  # Asegúrate de que cursor es un cursor de MySQL y usuario es un diccionario
+    cursor.execute("SELECT id, nombre FROM roles")
+    roles = cursor.fetchall()
+
+    return render_template('editar_usuario.html', usuario=usuario, roles=roles)
+
+
+
+@app.route('/admin/eliminar_usuario/<int:user_id>', methods=['POST'])
+@role_required(['admin'])
+def eliminar_usuario(user_id):
+    cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (user_id,))
+    db.commit()
+    flash('Usuario eliminado correctamente.', 'success')
+    return redirect(url_for('listar_usuarios'))
+
+
 
 
 if __name__ == '__main__':

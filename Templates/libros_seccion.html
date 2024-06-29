@@ -1,23 +1,42 @@
-{% extends "base.html" %}
-
-{% block title %}Libros por Sección{% endblock %}
-
-{% block content %}
-<div class="container">
-    <h1>Libros por Sección</h1>
-    <div class="row">
-        {% for libro in libros %}
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="{{ url_for('static', filename='img/' ~ libro['imagen']) }}" class="card-img-top" alt="{{ libro['titulo'] }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ libro['titulo'] }}</h5>
-                    <p class="card-text">{{ libro['resenia'][:100] }}...</p> <!-- Mostramos los primeros 100 caracteres de la reseña -->
-                    <a href="{{ url_for('static', filename='pdf/' ~ libro['pdf']) }}" class="btn btn-primary">Ver PDF</a>
-                </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros por Sección</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Libros por Sección</h1>
+        <form action="{{ url_for('libros_seccion') }}" method="get" class="mb-4">
+            <div class="form-group">
+                <label for="genero_id">Seleccione una sección:</label>
+                <select name="genero_id" id="genero_id" class="form-control">
+                    <option value="">Todas</option>
+                    {% for genero in g.generos %}
+                        <option value="{{ genero[0] }}">{{ genero[1] }}</option>
+                    {% endfor %}
+                </select>
             </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+
+        <div class="row">
+            {% for libro in libros %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename=libro[4]) }}" class="card-img-top" alt="{{ libro[1] }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ libro[1] }}</h5>
+                            <p class="card-text">Autor: {{ libro[2] }} {{ libro[3] }}</p>
+                            <p class="card-text">{{ libro[5] }}</p>
+                            <a href="{{ url_for('ver_pdf', pdf_filename=libro[6]) }}" class="btn btn-primary" target="_blank">Ver PDF</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
