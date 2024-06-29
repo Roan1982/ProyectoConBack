@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Libros por Sección{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Libros por Sección</h1>
+    <div class="row">
+        {% for libro in libros %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="{{ url_for('static', filename='img/' ~ libro['imagen']) }}" class="card-img-top" alt="{{ libro['titulo'] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ libro['titulo'] }}</h5>
+                    <p class="card-text">{{ libro['resenia'][:100] }}...</p> <!-- Mostramos los primeros 100 caracteres de la reseña -->
+                    <a href="{{ url_for('static', filename='pdf/' ~ libro['pdf']) }}" class="btn btn-primary">Ver PDF</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

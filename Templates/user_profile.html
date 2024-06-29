@@ -1,0 +1,23 @@
+<!-- user_profile.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Perfil de Usuario</h1>
+        <div class="profile-info">
+            <p><strong>Nombre de usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ rol }}</p>
+            <p><strong>Nombre:</strong> {{ nombre }}</p>
+            <p><strong>Apellido:</strong> {{ apellido }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <!-- Agrega más información del perfil según tus necesidades -->
+        </div>
+        
+        <div class="navigation">
+            <a href="{{ url_for('bienvenido') }}" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+    </div>
+{% endblock %}

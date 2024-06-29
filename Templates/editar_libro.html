@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Libro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Editar Libro</h1>
+    <form action="{{ url_for('editar_libro', libro_id=libro[0]) }}" method="post" enctype="multipart/form-data">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" value="{{ libro[1] }}" required>
+        
+        <label for="autor_id">Autor:</label>
+        <select id="autor_id" name="autor_id" required>
+            {% for autor in autores %}
+            <option value="{{ autor[0] }}" {% if autor[0] == libro[2] %}selected{% endif %}>{{ autor[1] }}</option>
+            {% endfor %}
+        </select>
+        <a href="{{ url_for('agregar_autor') }}">Agregar nuevo autor</a>
+        
+        <label for="genero_id">Género:</label>
+        <select id="genero_id" name="genero_id" required>
+            {% for genero in generos %}
+            <option value="{{ genero[0] }}" {% if genero[0] == libro[3] %}selected{% endif %}>{{ genero[1] }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="año_publicacion">Año de Publicación:</label>
+        <input type="number" id="año_publicacion" name="año_publicacion" value="{{ libro[4] }}" required>
+        
+        <label for="imagen">Imagen:</label>
+        <input type="file" id="imagen" name="imagen">
+        {% if libro[5] %}
+        <p>Imagen actual: <img src="{{ url_for('static', filename=libro[5].split('static/')[1]) }}" alt="Imagen del libro" width="100"></p>
+        {% endif %}
+        
+        <label for="pdf">Archivo PDF:</label>
+        <input type="file" id="pdf" name="pdf">
+        {% if libro[7] %}
+        <p>PDF actual: <a href="{{ url_for('static', filename=libro[7].split('static/')[1]) }}" target="_blank">Ver PDF</a></p>
+        {% endif %}
+        
+        <label for="resenia">Reseña:</label>
+        <textarea id="resenia" name="resenia">{{ libro[6] }}</textarea>
+        
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</body>
+</html>

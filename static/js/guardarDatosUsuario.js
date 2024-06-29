@@ -1,30 +1,34 @@
-function guardarDatosUsuario() {
-    // Recolecta los datos del formulario
-    var nombre = document.getElementById('nombre').value;
-    var apellido = document.getElementById('apellido').value;
-    var username = document.getElementById('username').value;
-    var fechaNacimiento = document.getElementById('fecha_nacimiento').value;
-    var genero = document.querySelector('input[name="genero"]:checked').value;
-    var pais = document.getElementById('pais').value;
-    var otroPais = document.getElementById('otro_pais').value;
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+function registrarUsuario(event) {
+    event.preventDefault();  // Evita el envío tradicional del formulario
 
-    // Crea un objeto con los datos del usuario
-    var datosUsuario = {
-        nombre: nombre,
-        apellido: apellido,
-        username: username,
-        fechaNacimiento: fechaNacimiento,
-        genero: genero,
-        pais: pais === 'OTRO' ? otroPais : pais, // Si el usuario selecciona 'Otro', usa el valor de otroPais
-        email: email,
-        password: password // Se guarda la contraseña del usuario
-    };
+    // Llama a la función de validación de JavaScript
+    if (!validarFormulario()) {
+        return;
+    }
+    // Llama a la función de validación de edad
+    if (!validarEdad()) {
+        return;
+    }
 
-    // Guarda los datos del usuario en localStorage
-    localStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
+    document.getElementById('fecha_registro').value = new Date().toISOString().slice(0, 10);
 
-    // Redirecciona al usuario a otra página después de guardar los datos
-    window.location.href = "./login.html";
+    var formData = new FormData(document.getElementById('registroForm'));
+
+    fetch('/registro', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Registro exitoso');
+            window.location.href = '/login';  // Redirige al login
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Ocurrió un error. Por favor, inténtalo de nuevo.');
+    });
 }

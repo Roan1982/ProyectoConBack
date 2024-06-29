@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Lista de Libros{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Libros</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Año de Publicación</th>
+                <th>Imagen</th>
+                <th>Reseña</th>
+                <th>PDF</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for libro in libros %}
+            <tr>
+                <td>{{ libro.titulo }}</td>
+                <td>{{ libro.nombre }} {{ libro.apellidos }}</td>
+                <td>{{ libro.nombre_genero }}</td>
+                <td>{{ libro.año_publicacion }}</td>
+                <td><img src="{{ libro.imagen }}" alt="{{ libro.titulo }}" width="100"></td>
+                <td>{{ libro.resenia }}</td>
+                <td>
+                    {% if libro.pdf %}
+                        <a href="{{ url_for('ver_pdf', pdf_filename=libro.pdf.split('static/Libros/')[1]) }}" target="_blank">Ver PDF</a>
+                    {% else %}
+                        Sin PDF
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('editar_libro', libro_id=libro.libro_id) }}">Editar</a>
+                    <form action="{{ url_for('eliminar_libro', libro_id=libro.libro_id) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% endblock %}

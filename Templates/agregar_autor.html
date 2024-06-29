@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Agregar Autor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Agregar Autor</h1>
+    <form action="{{ url_for('agregar_autor') }}" method="post">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos:</label>
+            <input type="text" id="apellidos" name="apellidos" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="nacionalidad" class="form-label">Nacionalidad:</label>
+            <input type="text" id="nacionalidad" name="nacionalidad" class="form-control" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Agregar Autor</button>
+    </form>
+</div>
+{% endblock %}

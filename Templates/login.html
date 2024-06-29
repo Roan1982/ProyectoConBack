@@ -31,19 +31,18 @@
     <section>
         <div class="containerr">
             <form id="loginForm" action="{{ url_for('login') }}" method="post">
-                {{ form.hidden_tag() }}
                 <div class="form-group">
-                    <label for="username">{{ form.username.label }}</label>
-                    {{ form.username(class_="form-control", id="username", placeholder="Ingresa tu nombre de usuario o e-mail") }}
+                    <label for="username">Nombre de usuario:</label>
+                    <input type="text" id="username" name="username" placeholder="Ingresa tu e-mail o nombre de usuario" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">{{ form.password.label }}</label>
-                    {{ form.password(class_="form-control", id="password", placeholder="Contraseña") }}
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
                     <div class="hyperlink">
                         <a style="color: rgb(6, 6, 240); font-variant: small-caps; text-decoration:underline; font-size: small;" href="{{ url_for('restablecer_password') }}">¿No recuerdas tu contraseña?</a>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+                <button type="submit">Login</button>
             </form>
         </div>
     </section>
@@ -58,15 +57,7 @@
             </div>
         </div>
     </footer>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
+   
 </body>
 
 </html>

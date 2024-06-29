@@ -1,43 +1,64 @@
-from flask import Flask, jsonify, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 import pymysql
-from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
 from datetime import datetime
 from flask_bcrypt import Bcrypt, check_password_hash
-from flask_mail import Mail, Message
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo
-from werkzeug.security import generate_password_hash
-from entidades.models import db, Usuario, Autor, GeneroLiterario, Libro, Opinion
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER_IMG = 'static/img/'  # Carpeta donde se almacenarán las imágenes subidas
+UPLOAD_FOLDER_PDF = 'static/Libros/'  # Carpeta donde se almacenarán los PDFs subidos
+ALLOWED_EXTENSIONS_IMG = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS_PDF = {'pdf'}
 
 
 app = Flask('proyecto_Biblioteca')
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USERNAME'] = 'your_email@gmail.com'
-app.config['MAIL_PASSWORD'] = 'your_email_password'
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['UPLOAD_FOLDER_IMG'] = UPLOAD_FOLDER_IMG
+app.config['UPLOAD_FOLDER_PDF'] = UPLOAD_FOLDER_PDF
 bcrypt = Bcrypt(app)
-mail = Mail(app)
-s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
-connection = pymysql.connect(
-    host='localhost',
-    user='root',
-    password='',
-    db='biblioteca',
-    cursorclass=pymysql.cursors.DictCursor
-)
-db = pymysql.connect(host="localhost", user="root", password="", database="biblioteca")
+# Verificar si la extensión del archivo es permitida
+def allowed_file(filename, allowed_extensions):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+# Configuración de la conexión a la base de datos (ajusta los datos según tu configuración)
+db = pymysql.connect(host="localhost", user="root", password="root", database="biblioteca")
 cursor = db.cursor()
 
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
+
+def role_required(roles):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(*args, **kwargs):
+            if session.get('rol') in roles:
+                return view_func(*args, **kwargs)
+            else:
+                flash('No tienes permisos para acceder a esta página.', 'error')
+                return redirect(url_for('index'))
+        return wrapper
+    return decorator
+
+# Rutas principales de la aplicación
+# Ejemplo de rutas protegidas por roles
+@app.route('/admin')
+@role_required(['admin'])
+def admin_dashboard():
+    return render_template('admin_dashboard.html')
+
+
+@app.route('/perfil')
+@role_required(['user', 'admin'])
+def user_profile():
+    # Aquí asumes que tienes acceso a los datos del usuario desde la sesión o una base de datos
+    username = session.get('username')  # Obtén el nombre de usuario desde la sesión
+    rol = session.get('rol')  # Obtén el rol desde la sesión
+    nombre = session.get('nombre')  # Ejemplo: obtener el nombre del usuario desde la sesión
+    apellido = session.get('apellido')  # Ejemplo: obtener el apellido del usuario desde la sesión
+    email = session.get('email')  # Ejemplo: obtener el email del usuario desde la sesión
+
+    return render_template('user_profile.html', username=username, rol=rol, nombre=nombre, apellido=apellido, email=email)
+
 
 @app.route('/')
 def index():
@@ -45,52 +66,26 @@ def index():
 
 @app.route('/bienvenido')
 def bienvenido():
-    # Check if user is logged in (optional for additional security)
-    if 'username' not in session:
-        flash('Necesitas estar logueado para acceder a esta página.', 'warning')
+    if 'username' in session:
+        return render_template('bienvenido.html')
+    else:
+        flash('Inicia sesión para acceder a esta página.', 'error')
         return redirect(url_for('login'))
-
-    return render_template('bienvenido.html')
 
 @app.route('/home')
 def home():
+    print(session)  # Añadir esta línea para verificar el contenido de la sesión
     return render_template('home.html')
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        with connection.cursor() as cursor:
-            sql = "SELECT * FROM usuarios WHERE username = %s"
-            cursor.execute(sql, (username,))
-            user = cursor.fetchone()
-
-        if user and check_password_hash(user['password'], password):  # Assuming the password field in your table is named 'password'
-            session['username'] = username
-            flash(f'Welcome back, {username}!', 'success')
-            return redirect(url_for('bienvenido'))
-        else:
-            flash('username or password inválido.', 'danger')
-
-    return render_template('login.html', form=form)
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    flash('Cerraste sesión de manera exitosa.', 'success')
+    session.pop('username', None)
+    flash('Has cerrado sesión correctamente.', 'success')
     return redirect(url_for('index'))
 
-# @app.route('/restablecer_password')
-# def restablecer_password():
-#     return render_template('restablecer_password.html')
+@app.route('/restablecer_password')
+def restablecer_password():
+    return render_template('restablecer_password.html')
 
 @app.route('/signup')
 def signup():
@@ -100,6 +95,7 @@ def signup():
 def tucuento():
     return render_template('tucuento.html')
 
+# Funcionalidad para enviar una historia
 @app.route('/submit_story', methods=['POST'])
 def submit_story():
     titulo = request.form['titulo']
@@ -112,52 +108,258 @@ def submit_story():
     with open('historias.txt', 'a', encoding='utf-8') as file:
         file.write(historia)
     
+    flash('Historia enviada correctamente.', 'success')
     return redirect(url_for('home'))
-
-
 
 
 @app.route('/registro', methods=['POST'])
 def registro():
-    nombre = request.form['nombre']
-    apellido = request.form['apellido']
-    username = request.form['username']
-    email = request.form['email']
-    fecha_nacimiento = request.form['fecha_nacimiento']
-    genero = request.form['genero']
-    pais = request.form['pais']
-    if pais == 'OTRO':
-        pais = request.form['otro_pais']
-    password = request.form['password']
-    
-    # Convertir fechas a formatos correctos
-    fecha_nacimiento = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
-    fecha_registro = request.form['fecha_registro']
-    
-    # Encriptar la contraseña
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-
-    # Inserta los datos en la base de datos
-    sql = "INSERT INTO usuarios (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, hashed_password)
     try:
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        username = request.form['username']
+        email = request.form['email']
+        fecha_nacimiento = request.form['fecha_nacimiento']
+        genero = request.form['genero']
+        pais = request.form['pais']
+        if pais == 'OTRO':
+            pais = request.form['otro_pais']
+        password = request.form['password']
+        
+        # Convertir fechas a formatos correctos
+        fecha_nacimiento = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').strftime('%Y-%m-%d %H:%M:%S')
+        fecha_registro = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Encriptar la contraseña
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    
+        # Insertar los datos en la base de datos
+        sql = "INSERT INTO usuarios (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (nombre, apellido, username, email, fecha_nacimiento, fecha_registro, genero, pais, hashed_password)
+        
         cursor.execute(sql, val)
         db.commit()
-        return jsonify(success=True)
+        
+        flash('Registro exitoso. Por favor inicia sesión.', 'success')
+        return {'success': True}  # Respondemos con éxito al cliente
+
     except pymysql.MySQLError as e:
         print(f"Error al insertar en la base de datos: {e}")
         db.rollback()
-        return jsonify(success=False, message=str(e))
+        flash('Error al registrar. Inténtalo nuevamente.', 'error')
+        return {'success': False, 'message': 'Error al registrar. Inténtalo nuevamente.'}
+
+@app.route('/libros_seccion')
+def libros_seccion():
+    # Consulta los libros de la base de datos
+    sql = "SELECT libro_id, titulo, imagen, resenia, pdf FROM libros"
+    cursor.execute(sql)
+    libros = cursor.fetchall()
     
+    return render_template('libros_seccion.html', libros=libros)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
         
+        # Consulta SQL con join para obtener el rol
+        sql = """
+            SELECT u.username, u.password, u.nombre, u.apellido, u.email, r.nombre as rol 
+            FROM usuarios u 
+            JOIN roles r ON u.rol_id = r.id 
+            WHERE u.username = %s
+        """
+        cursor.execute(sql, (username,))
+        result = cursor.fetchone()
+        
+        if result:
+            stored_username, hashed_password, nombre, apellido, email, rol = result
+            
+            # Verificar si la contraseña proporcionada coincide con la almacenada
+            if check_password_hash(hashed_password, password):
+                # Establecer la sesión del usuario con sus datos y rol
+                session['username'] = stored_username
+                session['rol'] = rol  # Asignar el rol del usuario desde la base de datos
+                session['nombre'] = nombre
+                session['apellido'] = apellido
+                session['email'] = email
+                
+                flash(f'Inicio de sesión como {session["rol"]}.', 'success')
+                
+                if 'admin' in session['rol']:
+                    return redirect(url_for('admin_dashboard'))
+                else:
+                    return redirect(url_for('bienvenido'))
+        
+        flash('Nombre de usuario o contraseña incorrectos.', 'error')
+        return redirect(url_for('login'))
+    
+    return render_template('login.html')
+
+
+
+@app.route('/libros')
+def listar_libros():
+    cursor.execute("SELECT l.libro_id, l.titulo, a.nombre, a.apellidos, g.nombre_genero, l.año_publicacion, l.imagen, l.resenia, l.pdf FROM libros l JOIN autores a ON l.autor_id = a.autor_id JOIN generos_literarios g ON l.genero_id = g.genero_id")
+    libros = cursor.fetchall()
+    libros_con_objetos = []
+    for libro in libros:
+        libro_objeto = {
+            'libro_id': libro[0],
+            'titulo': libro[1],
+            'nombre_autor': f"{libro[2]} {libro[3]}",
+            'nombre_genero': libro[4],
+            'año_publicacion': libro[5],
+            'imagen': libro[6],
+            'resenia': libro[7],
+            'pdf': libro[8]
+        }
+        libros_con_objetos.append(libro_objeto)
+
+    return render_template('listar_libros.html', libros=libros_con_objetos)
+
+# Ruta para agregar libros
+@app.route('/agregar_libro', methods=['GET', 'POST'])
+def agregar_libro():
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        autor_id = request.form['autor_id']
+        genero_id = request.form['genero_id']
+        año_publicacion = request.form['año_publicacion']
+        resenia = request.form['resenia']
+        
+        # Manejo de la imagen subida
+        imagen = None
+        if 'imagen' in request.files:
+            file_img = request.files['imagen']
+            if file_img and allowed_file(file_img.filename, ALLOWED_EXTENSIONS_IMG):
+                filename_img = secure_filename(file_img.filename)
+                file_img.save(os.path.join(app.config['UPLOAD_FOLDER_IMG'], filename_img))
+                imagen = os.path.join(app.config['UPLOAD_FOLDER_IMG'], filename_img)
+        
+        # Manejo del PDF subido
+        pdf = None
+        if 'pdf' in request.files:
+            file_pdf = request.files['pdf']
+            if file_pdf and allowed_file(file_pdf.filename, ALLOWED_EXTENSIONS_PDF):
+                filename_pdf = secure_filename(file_pdf.filename)
+                file_pdf.save(os.path.join(app.config['UPLOAD_FOLDER_PDF'], filename_pdf))
+                pdf = os.path.join(app.config['UPLOAD_FOLDER_PDF'], filename_pdf)
+        
+        sql = "INSERT INTO libros (titulo, autor_id, genero_id, año_publicacion, imagen, resenia, pdf) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (titulo, autor_id, genero_id, año_publicacion, imagen, resenia, pdf)
+        cursor.execute(sql, val)
+        db.commit()
+        flash('Libro agregado correctamente.', 'success')
+        return redirect(url_for('listar_libros'))
+    
+    cursor.execute("SELECT autor_id, CONCAT(nombre, ' ', apellidos) as nombre_completo FROM autores")
+    autores = cursor.fetchall()
+    cursor.execute("SELECT genero_id, nombre_genero FROM generos_literarios")
+    generos = cursor.fetchall()
+    return render_template('agregar_libro.html', autores=autores, generos=generos)
+
+@app.route('/editar_libro/<int:libro_id>', methods=['GET', 'POST'])
+def editar_libro(libro_id):
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        autor_id = request.form['autor_id']
+        genero_id = request.form['genero_id']
+        año_publicacion = request.form['año_publicacion']
+        resenia = request.form['resenia']
+        
+        # Manejo de la imagen subida
+        imagen = None
+        if 'imagen' in request.files:
+            file_img = request.files['imagen']
+            if file_img and allowed_file(file_img.filename, ALLOWED_EXTENSIONS_IMG):
+                filename_img = secure_filename(file_img.filename)
+                file_img.save(os.path.join(app.config['UPLOAD_FOLDER_IMG'], filename_img))
+                imagen = os.path.join(app.config['UPLOAD_FOLDER_IMG'], filename_img)
+        
+        # Manejo del PDF subido
+        pdf = None
+        if 'pdf' in request.files:
+            file_pdf = request.files['pdf']
+            if file_pdf and allowed_file(file_pdf.filename, ALLOWED_EXTENSIONS_PDF):
+                filename_pdf = secure_filename(file_pdf.filename)
+                file_pdf.save(os.path.join(app.config['UPLOAD_FOLDER_PDF'], filename_pdf))
+                pdf = os.path.join(app.config['UPLOAD_FOLDER_PDF'], filename_pdf)
+        
+        # Actualizar la base de datos con los nuevos datos
+        sql = "UPDATE libros SET titulo=%s, autor_id=%s, genero_id=%s, año_publicacion=%s, resenia=%s"
+        val = [titulo, autor_id, genero_id, año_publicacion, resenia]
+        
+        if imagen:
+            sql += ", imagen=%s"
+            val.append(imagen)
+        
+        if pdf:
+            sql += ", pdf=%s"
+            val.append(pdf)
+        
+        sql += " WHERE libro_id=%s"
+        val.append(libro_id)
+        
+        cursor.execute(sql, tuple(val))
+        db.commit()
+        
+        flash('Libro editado correctamente.', 'success')
+        return redirect(url_for('listar_libros'))
+    
+    # Obtener los datos actuales del libro para mostrar en el formulario
+    cursor.execute("SELECT * FROM libros WHERE libro_id = %s", (libro_id,))
+    libro = cursor.fetchone()
+    
+    cursor.execute("SELECT autor_id, CONCAT(nombre, ' ', apellidos) as nombre_completo FROM autores")
+    autores = cursor.fetchall()
+    cursor.execute("SELECT genero_id, nombre_genero FROM generos_literarios")
+    generos = cursor.fetchall()
+    
+    return render_template('editar_libro.html', libro=libro, autores=autores, generos=generos)
+
+
+# Ruta para eliminar libros
+@app.route('/eliminar_libro/<int:libro_id>', methods=['POST'])
+def eliminar_libro(libro_id):
+    cursor.execute("DELETE FROM libros WHERE libro_id = %s", (libro_id,))
+    db.commit()
+    flash('Libro eliminado correctamente.', 'success')
+    return redirect(url_for('listar_libros'))
+
+# Ruta para agregar autores
+@app.route('/agregar_autor', methods=['GET', 'POST'])
+def agregar_autor():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellidos = request.form['apellidos']
+        nacionalidad = request.form['nacionalidad']
+        
+        sql = "INSERT INTO autores (nombre, apellidos, nacionalidad) VALUES (%s, %s, %s)"
+        val = (nombre, apellidos, nacionalidad)
+        cursor.execute(sql, val)
+        db.commit()
+        flash('Autor agregado correctamente.', 'success')
+        return redirect(url_for('agregar_libro'))
+    
+    return render_template('agregar_autor.html')
+
+# Clave secreta para sesiones
 app.secret_key = 'ClaveSecretaDeAppSecretKey'
 
-
-@app.route('/restablecer_password', methods=['GET', 'POST'])
-def restablecer_password():
-    return render_template('restablecer_password.html')
+# Ruta para servir archivos PDF desde la carpeta 'static/Libros'
+@app.route('/static/Libros/<pdf_filename>')
+def ver_pdf(pdf_filename):
+    return send_from_directory('static/Libros', pdf_filename)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Cierra la conexión con la base de datos al finalizar la aplicación
+@app.teardown_appcontext
+def close_db_connection(exception=None):
+    db.close()
