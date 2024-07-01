@@ -34,7 +34,7 @@ def allowed_file(filename, allowed_extensions):
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 # Configuración de la conexión a la base de datos (ajusta los datos según tu configuración)
-db = pymysql.connect(host="localhost", user="root", password="root", database="biblioteca")
+db = pymysql.connect(host="sql10.freemysqlhosting.net", user="sql10717364", password="HlNjFFaxiM", database="sql10717364")
 cursor = db.cursor()
 
 
