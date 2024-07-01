@@ -501,7 +501,7 @@ def eliminar_usuario(user_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 # Cierra la conexión con la base de datos al finalizar la aplicación
 @app.teardown_appcontext
